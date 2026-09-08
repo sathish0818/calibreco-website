@@ -12,6 +12,9 @@
   --line:      #e4e6ec;
   --accent:    #3b4fe0;
   --accent-ink:#ffffff;
+  --ok:        #1a7f4b;
+  --ok-soft:   #e8f5ee;
+  --warn:      #9a6410;
   --shadow:    0 1px 2px rgba(16, 19, 26, .04), 0 8px 24px rgba(16, 19, 26, .05);
 
   --wrap: 1120px;
@@ -29,10 +32,16 @@
   --line:      #212734;
   --accent:    #8494ff;
   --accent-ink:#0b0e14;
+  --ok:        #5cd39a;
+  --ok-soft:   #10241a;
+  --warn:      #d6a24a;
   --shadow:    0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px rgba(0, 0, 0, .32);
 }
 
 * { box-sizing: border-box; }
+
+/* Class rules that set `display` would otherwise beat the UA's [hidden] style. */
+[hidden] { display: none !important; }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
@@ -395,4 +404,214 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round
   .footer-inner a,
   .footer-logo { flex: 0 0 auto; }
   .footer-logo { height: 46px; }
+}
+
+
+/* ============================================================
+   Booking
+   ============================================================ */
+
+.booking-head {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 56px); align-items: end;
+}
+
+.svc-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px; margin-top: clamp(36px, 5vw, 56px);
+}
+
+.svc {
+  display: flex; flex-direction: column;
+  padding: clamp(22px, 2.6vw, 30px);
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+.svc:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); box-shadow: var(--shadow); }
+
+.svc-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
+.svc-top h3 { font-size: 1.06rem; margin-right: auto; }
+
+.chip {
+  flex: none;
+  font-size: .7rem; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted); background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 4px 10px; white-space: nowrap;
+}
+
+.svc > p { color: var(--muted); font-size: .93rem; }
+
+.week {
+  list-style: none; margin: 20px 0 22px; padding: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px;
+}
+.week li {
+  text-align: center; padding: 8px 4px;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--bg); line-height: 1.3;
+}
+.week .day { display: block; font-size: .74rem; font-weight: 500; }
+.week .state { display: block; font-size: .68rem; color: var(--ok); }
+.week li.is-booked .state { color: var(--warn); }
+.week li.is-booked { background: var(--surface-2); }
+
+.svc .btn { margin-top: auto; }
+
+.week-note {
+  margin-top: 26px; color: var(--muted); font-size: .85rem;
+}
+.week-note a { color: var(--accent); text-decoration: none; }
+.week-note a:hover { text-decoration: underline; }
+
+/* ---------- Booking dialog ---------- */
+
+.modal {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center;
+  padding: 20px;
+}
+.modal-veil {
+  position: absolute; inset: 0;
+  background: rgba(8, 10, 16, .55);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+}
+.modal-card {
+  position: relative;
+  width: min(680px, 100%); max-height: calc(100vh - 40px);
+  display: flex; flex-direction: column;
+  background: var(--bg); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: 0 24px 70px rgba(8, 10, 16, .35);
+  overflow: hidden;
+  animation: modal-in .22s var(--ease);
+}
+@keyframes modal-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
+
+.modal-head {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 22px; border-bottom: 1px solid var(--line);
+}
+.modal-head h2 { font-size: 1.02rem; margin-right: auto; }
+#modal-service { color: var(--accent); }
+
+.modal-x {
+  flex: none; display: grid; place-items: center;
+  width: 34px; height: 34px; padding: 0;
+  border: 1px solid var(--line); border-radius: 9px;
+  background: var(--surface); color: var(--muted); cursor: pointer;
+  transition: color .2s var(--ease), background-color .2s var(--ease);
+}
+.modal-x:hover { color: var(--ink); background: var(--surface-2); }
+
+.modal-body {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px 18px;
+  padding: 22px; overflow-y: auto;
+}
+
+.field { display: grid; gap: 6px; min-width: 0; }
+.field-wide { grid-column: 1 / -1; }
+.field label {
+  font-size: .74rem; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--muted);
+}
+.field .opt { text-transform: none; letter-spacing: 0; opacity: .8; }
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%; font: inherit; font-size: .94rem; color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line); border-radius: 9px;
+  padding: 10px 12px;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.field textarea { resize: vertical; min-height: 76px; }
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(--muted); opacity: .7; }
+.field select { appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 34px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% + 1px), calc(100% - 13px) calc(50% + 1px);
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+}
+
+.err { font-size: .78rem; color: #c2410c; min-height: 0; }
+[data-theme="dark"] .err { color: #f0895f; }
+.field.is-bad input,
+.field.is-bad select { border-color: #c2410c; }
+[data-theme="dark"] .field.is-bad input,
+[data-theme="dark"] .field.is-bad select { border-color: #f0895f; }
+
+.modal-foot {
+  grid-column: 1 / -1;
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end;
+  margin-top: 4px; padding-top: 18px; border-top: 1px solid var(--line);
+}
+
+/* ---------- Booking confirmation ---------- */
+
+.modal-done { padding: 34px 26px 26px; text-align: center; overflow-y: auto; }
+.done-mark {
+  display: grid; place-items: center;
+  width: 52px; height: 52px; margin: 0 auto 18px;
+  border-radius: 14px; background: var(--ok-soft); color: var(--ok);
+}
+.done-mark svg { stroke-width: 2.4; }
+.modal-done h3 { font-size: 1.16rem; margin-bottom: 10px; }
+.modal-done > p { color: var(--muted); font-size: .93rem; max-width: 46ch; margin-inline: auto; }
+
+.done-summary {
+  margin: 24px 0 0; text-align: left;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden;
+}
+.done-summary > div {
+  display: flex; flex-wrap: wrap; gap: 4px 16px;
+  justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+  font-size: .9rem;
+}
+.done-summary > div:last-child { border-bottom: 0; }
+.done-summary dt { color: var(--muted); }
+.done-summary dd { margin: 0; font-weight: 500; text-align: right; }
+
+.done-actions {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  margin-top: 24px;
+}
+.link-btn {
+  margin-top: 14px; padding: 6px 10px;
+  background: none; border: 0; border-radius: 8px;
+  color: var(--muted); font: inherit; font-size: .85rem; cursor: pointer;
+}
+.link-btn:hover { color: var(--ink); }
+
+body.is-locked { overflow: hidden; }
+
+@media (max-width: 860px) {
+  .booking-head { grid-template-columns: 1fr; align-items: start; }
+  .svc-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 620px) {
+  .modal { padding: 0; place-items: stretch; }
+  .modal-card {
+    width: 100%; max-height: 100vh; height: 100%;
+    border: 0; border-radius: 0;
+  }
+  .modal-body { grid-template-columns: 1fr; }
+  .modal-foot { justify-content: stretch; }
+  .modal-foot .btn { flex: 1 1 auto; }
+  .svc-top { flex-wrap: wrap; }
+  .week { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .week .day { font-size: .68rem; }
+  .week .state { font-size: .6rem; }
 }
