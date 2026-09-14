@@ -36,9 +36,25 @@ file. They are **indicative only** — nothing reads a live calendar, so keep th
 map in step with the real dispatch schedule, or delete the `.week` lists if you
 would rather not show availability at all.
 
+## SEO
+
+`index.html` carries the canonical URL, Open Graph and Twitter card tags, and a
+schema.org `ProfessionalService` + `WebSite` graph in JSON-LD with the service
+catalogue. `robots.txt` and `sitemap.xml` sit at the root. The share card is
+`assets/img/og-cover.jpg` (1200×630).
+
+Deliberately **not** claimed in the structured data, because the values are not
+known — add them when you have them:
+
+- `geo` latitude/longitude
+- `openingHoursSpecification`
+- full `streetAddress` (only locality and postcode are set)
+- `aggregateRating` / `review` — only ever add these from genuine reviews
+
 ## Features
 
 - Service booking: four bookable services, validated request form, WhatsApp/email dispatch
+- SEO: canonical, Open Graph/Twitter cards, JSON-LD structured data, robots.txt, sitemap
 - Minimal design system: neutral ink scale plus one indigo accent drawn from the deck
 - Light and dark theme with a header toggle — respects `prefers-color-scheme`,
   remembers the visitor's choice in `localStorage`, applied before first paint
