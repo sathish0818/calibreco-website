@@ -1,10 +1,17 @@
 # Calibreco Technology — Website
 
-One-page marketing site for **Calibreco Technology**, a Chennai-based industrial
-dimensional metrology and 3D scanning provider.
+**Live site: [www.calibrecotechnology.com](https://www.calibrecotechnology.com)**
 
-Built from the company profile deck (`Calibreco Company Profile.pptx`) — all copy,
-photography, customer logos and the brand logo are sourced from that deck.
+Calibreco Technology is a Chennai-based industrial dimensional metrology and 3D
+scanning company. Services include on-site dimensional inspection, 3D laser
+scanning, laser tracker measurement and alignment, portable arm CMM inspection,
+GD&T analysis to ASME Y14.5, and reverse engineering.
+
+Contact: 96007 94700 · calibreco25@gmail.com · Chennai 600050, India
+
+This repository holds the source for the one-page marketing site, built from the
+company profile deck — all copy, photography, customer logos and the brand logo
+are sourced from that deck.
 
 ## Stack
 
